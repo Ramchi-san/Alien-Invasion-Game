@@ -11,19 +11,11 @@ class Ship:
         self.screen_rect = ai_game.screen.get_rect()
         self.settings = ai_game.settings
 
-        with Image.open('images/ship.png') as img:
-            
-            # Define the new size
-            new_width = 100
-            new_height = 100
-
-            # Resize the image
-            resized_img = img.resize((new_width, new_height))
-            resized_img.save('images/resized_ship.png')
-
-
+        
         #Load the ship image and get its rect.
-        self.image = pygame.image.load('images/resized_ship.png')
+        new_img_file = 'version-1/images/resized_ship.png'
+        self._ship_resizer('version-1/images/ship.png', 100, 100, new_img_file)
+        self.image = pygame.image.load(new_img_file)
         self.rect = self.image.get_rect()
 
         #Start each new ship at the bottom center of the screen.
@@ -35,6 +27,20 @@ class Ship:
         #Movement flag
         self.moving_right = False
         self.moving_left = False
+    
+    def _ship_resizer(self, img_file, width, height, new_img_file):
+        with Image.open(img_file) as img:
+            
+            # Resize the image
+            resized_img = img.resize((width, height))
+            resized_img.save(new_img_file)
+
+    def center_ship(self):
+        #Start each new ship at the bottom center of the screen.
+        self.rect.midbottom = self.screen_rect.midbottom
+
+        #Store a decimal value for the ship's horizontal position
+        self.x = float(self.rect.x)
 
     def update(self):
         """Update the ship's position based on the movement flag"""
